@@ -1,41 +1,104 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ==============================================================================
+# WORLD CLASS .GITIGNORE FOR NEXT.JS SaaS
+# ==============================================================================
 
-# dependencies
+# ------------------------------------------------------------------------------
+# Dependencies
+# ------------------------------------------------------------------------------
 /node_modules
 /.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp.js
+.yarn/install-state.gz
 
-# testing
-/coverage
-
-# next.js
+# ------------------------------------------------------------------------------
+# Next.js Build Output
+# ------------------------------------------------------------------------------
 /.next/
 /out/
+build/
+dist/
 
-# production
-/build
-
-# misc
-.DS_Store
+# ------------------------------------------------------------------------------
+# Environment Variables & Secrets
+# ------------------------------------------------------------------------------
+# IMPORTANT: NEVER COMMIT YOUR .ENV FILES!
+.env
+.env.*
+!.env.example
+!.env.template
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+supabase/.temp/
 *.pem
+*.key
+*.cert
+*.crt
 
-# debug
+# ------------------------------------------------------------------------------
+# Logs and Runtime Files
+# ------------------------------------------------------------------------------
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-store
 
-# env files (can opt-in for committing if needed)
-.env*
+# ------------------------------------------------------------------------------
+# Testing & Coverage reports
+# ------------------------------------------------------------------------------
+/coverage/
+/.nyc_output/
+playwright-report/
+test-results/
 
-# vercel
+# ------------------------------------------------------------------------------
+# Caches & IDEs
+# ------------------------------------------------------------------------------
+.eslintcache
+.stylelintcache
+.prettiercache
+.tsbuildinfo
 .vercel
+.turbo
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# IntelliJ Idea / WebStorm
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Other Editors
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*~
+.fleet/
+
+# ------------------------------------------------------------------------------
+# Miscellaneous
+# ------------------------------------------------------------------------------
+npm-env*
+*.tgz
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml

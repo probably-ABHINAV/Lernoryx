@@ -1,37 +1,27 @@
-// import { supabase } from "@/lib/supabase";
-import type { User, CreateUserInput, UpdateUserInput } from "./users.types";
+import { createClient } from "@/lib/supabase/server";
+import type { AppUser, CreateUserInput } from "./users.types";
 
-/**
- * UsersRepo — database operations for users.
- */
 export class UsersRepo {
-  static async findById(id: string): Promise<User | null> {
-    // TODO: Query users table
-    throw new Error("Not implemented");
+  static async findByOrg(org_id: string): Promise<AppUser[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("org_id", org_id);
+
+    if (error) throw error;
+    return data;
   }
 
-  static async findByEmail(email: string): Promise<User | null> {
-    // TODO: Query users table
-    throw new Error("Not implemented");
-  }
+  static async insert(data: CreateUserInput): Promise<AppUser> {
+    const supabase = await createClient();
+    const { data: user, error } = await supabase
+      .from("users")
+      .insert(data)
+      .select()
+      .single();
 
-  static async findByOrg(orgId: string): Promise<User[]> {
-    // TODO: Query with org filter + pagination
-    throw new Error("Not implemented");
-  }
-
-  static async insert(data: CreateUserInput): Promise<User> {
-    // TODO: Insert into users table
-    throw new Error("Not implemented");
-  }
-
-  static async update(id: string, data: UpdateUserInput): Promise<User> {
-    // TODO: Update users table
-    throw new Error("Not implemented");
-  }
-
-  static async softDelete(id: string): Promise<void> {
-    // TODO: Set deleted_at timestamp
-    throw new Error("Not implemented");
+    if (error) throw error;
+    return user;
   }
 }

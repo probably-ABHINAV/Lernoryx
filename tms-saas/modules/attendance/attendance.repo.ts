@@ -1,26 +1,27 @@
-import type { AttendanceRecord, MarkAttendanceInput } from "./attendance.types";
+import { createClient } from "@/lib/supabase/server";
+import type { Attendance, MarkAttendanceInput } from "./attendance.types";
 
-/**
- * AttendanceRepo — database operations for attendance records.
- */
 export class AttendanceRepo {
-  static async findBySession(sessionId: string): Promise<AttendanceRecord[]> {
-    throw new Error("Not implemented");
+  static async findByOrg(org_id: string): Promise<Attendance[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("attendance")
+      .select("*")
+      .eq("org_id", org_id);
+
+    if (error) throw error;
+    return data;
   }
 
-  static async findByStudent(studentId: string): Promise<AttendanceRecord[]> {
-    throw new Error("Not implemented");
-  }
+  static async upsert(data: MarkAttendanceInput): Promise<Attendance> {
+    const supabase = await createClient();
+    const { data: record, error } = await supabase
+      .from("attendance")
+      .upsert(data, { onConflict: 'session_id, student_id' }) // Assuming a unique constraint exists
+      .select()
+      .single();
 
-  static async insert(data: MarkAttendanceInput): Promise<AttendanceRecord> {
-    throw new Error("Not implemented");
-  }
-
-  static async bulkInsert(data: MarkAttendanceInput[]): Promise<AttendanceRecord[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async update(id: string, status: AttendanceRecord["status"]): Promise<void> {
-    throw new Error("Not implemented");
+    if (error) throw error;
+    return record;
   }
 }

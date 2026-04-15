@@ -1,34 +1,16 @@
-import type { Session, CreateSessionInput, UpdateSessionInput } from "./sessions.types";
+import type { Session, CreateSessionInput } from "./sessions.types";
+import { SessionsRepo } from "./sessions.repo";
 
-/**
- * SessionsService — manage individual training sessions.
- */
 export class SessionsService {
-  static async getById(id: string): Promise<Session | null> {
-    throw new Error("Not implemented");
+  static async list(user: any): Promise<Session[]> {
+    return SessionsRepo.findByOrg(user.profile.org_id);
   }
 
-  static async listBySection(sectionId: string): Promise<Session[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async listByTrainer(trainerId: string, date?: string): Promise<Session[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async listToday(orgId: string): Promise<Session[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async create(input: CreateSessionInput): Promise<Session> {
-    throw new Error("Not implemented");
-  }
-
-  static async update(id: string, input: UpdateSessionInput): Promise<Session> {
-    throw new Error("Not implemented");
-  }
-
-  static async cancel(id: string, reason: string): Promise<void> {
-    throw new Error("Not implemented");
+  static async create(user: any, data: Omit<CreateSessionInput, "org_id">): Promise<Session> {
+    const input: CreateSessionInput = {
+      ...data,
+      org_id: user.profile.org_id,
+    };
+    return SessionsRepo.insert(input);
   }
 }

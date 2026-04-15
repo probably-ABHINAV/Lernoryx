@@ -1,30 +1,27 @@
-import type { Grade, CreateGradeInput, UpdateGradeInput } from "./grades.types";
+import { createClient } from "@/lib/supabase/server";
+import type { Grade, AddGradeInput } from "./grades.types";
 
-/**
- * GradesRepo — database operations for grades.
- */
 export class GradesRepo {
-  static async findById(id: string): Promise<Grade | null> {
-    throw new Error("Not implemented");
+  static async findByOrg(org_id: string): Promise<Grade[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("grades")
+      .select("*")
+      .eq("org_id", org_id);
+
+    if (error) throw error;
+    return data;
   }
 
-  static async findByStudent(studentId: string): Promise<Grade[]> {
-    throw new Error("Not implemented");
-  }
+  static async insert(data: AddGradeInput): Promise<Grade> {
+    const supabase = await createClient();
+    const { data: grade, error } = await supabase
+      .from("grades")
+      .insert(data)
+      .select()
+      .single();
 
-  static async findBySection(sectionId: string): Promise<Grade[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async insert(data: CreateGradeInput): Promise<Grade> {
-    throw new Error("Not implemented");
-  }
-
-  static async update(id: string, data: UpdateGradeInput): Promise<Grade> {
-    throw new Error("Not implemented");
-  }
-
-  static async delete(id: string): Promise<void> {
-    throw new Error("Not implemented");
+    if (error) throw error;
+    return grade;
   }
 }

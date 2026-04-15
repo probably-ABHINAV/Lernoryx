@@ -1,33 +1,16 @@
-import type {
-  AttendanceRecord,
-  MarkAttendanceInput,
-  AttendanceSummary,
-} from "./attendance.types";
+import type { Attendance, MarkAttendanceInput } from "./attendance.types";
+import { AttendanceRepo } from "./attendance.repo";
 
-/**
- * AttendanceService — business logic for tracking attendance.
- */
 export class AttendanceService {
-  static async getBySession(sessionId: string): Promise<AttendanceRecord[]> {
-    throw new Error("Not implemented");
+  static async list(user: any): Promise<Attendance[]> {
+    return AttendanceRepo.findByOrg(user.profile.org_id);
   }
 
-  static async getByStudent(studentId: string): Promise<AttendanceRecord[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async markAttendance(input: MarkAttendanceInput): Promise<AttendanceRecord> {
-    throw new Error("Not implemented");
-  }
-
-  static async bulkMarkAttendance(inputs: MarkAttendanceInput[]): Promise<AttendanceRecord[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async getSummary(
-    sectionId: string,
-    dateRange?: { from: string; to: string }
-  ): Promise<AttendanceSummary> {
-    throw new Error("Not implemented");
+  static async markAttendance(user: any, data: Omit<MarkAttendanceInput, "org_id">): Promise<Attendance> {
+    const input: MarkAttendanceInput = {
+      ...data,
+      org_id: user.profile.org_id,
+    };
+    return AttendanceRepo.upsert(input);
   }
 }

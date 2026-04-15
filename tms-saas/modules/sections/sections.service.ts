@@ -1,38 +1,18 @@
-import type { Section, CreateSectionInput, UpdateSectionInput } from "./sections.types";
-
-/**
- * SectionsService — manage training sections (classes/groups).
- */
+import type { Section, CreateSectionInput } from "./sections.types";
+import { SectionsRepo } from "./sections.repo";
+// Using `any` for user type to match your example, but normally we'd import AuthUser
 export class SectionsService {
-  static async getById(id: string): Promise<Section | null> {
-    throw new Error("Not implemented");
+  static async list(user: any): Promise<Section[]> {
+    return SectionsRepo.findByOrg(user.profile.org_id);
   }
 
-  static async listByOrg(orgId: string): Promise<Section[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async listByTrainer(trainerId: string): Promise<Section[]> {
-    throw new Error("Not implemented");
-  }
-
-  static async create(input: CreateSectionInput): Promise<Section> {
-    throw new Error("Not implemented");
-  }
-
-  static async update(id: string, input: UpdateSectionInput): Promise<Section> {
-    throw new Error("Not implemented");
-  }
-
-  static async delete(id: string): Promise<void> {
-    throw new Error("Not implemented");
-  }
-
-  static async addStudent(sectionId: string, studentId: string): Promise<void> {
-    throw new Error("Not implemented");
-  }
-
-  static async removeStudent(sectionId: string, studentId: string): Promise<void> {
-    throw new Error("Not implemented");
+  static async create(user: any, name: string, description?: string): Promise<Section> {
+    const input: CreateSectionInput = {
+      name,
+      description,
+      org_id: user.profile.org_id,
+      // created_by: user.id
+    };
+    return SectionsRepo.insert(input);
   }
 }

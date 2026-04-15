@@ -1,49 +1,33 @@
-import { NextRequest, NextResponse } from "next/server";
-// import { AttendanceService } from "@/modules/attendance/attendance.service";
+import { getCurrentUser } from "@/lib/auth";
+import { AttendanceService } from "@/modules/attendance/attendance.service";
+import { NextResponse } from "next/server";
 
-/**
- * GET /api/attendance
- * Fetch attendance records with optional filters.
- */
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url);
-    const sectionId = searchParams.get("sectionId");
-    const sessionId = searchParams.get("sessionId");
+    const user = await getCurrentUser();
+    if (!user) return new Response("Unauthorized", { status: 401 });
 
-    // TODO: Implement with AttendanceService
-    return NextResponse.json({
-      success: true,
-      data: [],
-      filters: { sectionId, sessionId },
-    });
-  } catch (error) {
-    console.error("[API] GET /api/attendance error:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal server error" },
-      { status: 500 }
-    );
+    const data = await AttendanceService.list(user);
+    return NextResponse.json({ success: true, data });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
 
-/**
- * POST /api/attendance
- * Record attendance for a session.
- */
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
+    const user = await getCurrentUser();
+    if (!user) return new Response("Unauthorized", { status: 401 });
 
-    // TODO: Validate body, check auth, call AttendanceService
-    return NextResponse.json(
-      { success: true, data: body },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("[API] POST /api/attendance error:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal server error" },
-      { status: 500 }
-    );
+    const { session_id, student_id, status } = await req.json();
+    const data = await AttendanceService.markAttendance(user, {
+      session_id,
+      student_id,
+      status
+    });
+
+    return NextResponse.json({ success: true, data });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
