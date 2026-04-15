@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { StatCard } from "@/components/dashboard/stat-card";
+import { requireAuth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -13,7 +15,13 @@ const stats = [
   { label: "Revenue (MTD)", value: "$24,500", change: "+8%", trend: "up" as const },
 ];
 
-export default function AdminDashboardPage() {
+export default async function AdminDashboardPage() {
+  const user = await requireAuth();
+  
+  if (user.profile?.role !== "admin") {
+    redirect("/dashboard");
+  }
+
   return (
     <div>
       <div className="mb-8">
