@@ -55,41 +55,53 @@ export function SignupForm() {
           Signup successful! Redirecting...
         </div>
       )}
-      <Input
-        label="Full Name"
-        name="fullName"
-        type="text"
-        placeholder="John Doe"
-        required
-        autoComplete="name"
-      />
-      <Input
-        label="Email"
-        name="email"
-        type="email"
-        placeholder="you@example.com"
-        required
-        autoComplete="email"
-      />
-      <Input
-        label="Password"
-        name="password"
-        type="password"
-        placeholder="••••••••"
-        required
-        autoComplete="new-password"
-        helperText="Must be at least 8 characters"
-      />
-      <Input
-        label="Confirm Password"
-        name="confirmPassword"
-        type="password"
-        placeholder="••••••••"
-        required
-        autoComplete="new-password"
-      />
-      <Button type="submit" isLoading={isLoading} className="w-full">
-        Create Account
+      <div className="space-y-2">
+        <label htmlFor="fullName" className="text-sm font-medium text-slate-700">Full Name</label>
+        <Input
+          id="fullName"
+          name="fullName"
+          type="text"
+          placeholder="John Doe"
+          required
+          autoComplete="name"
+        />
+      </div>
+      <div className="space-y-2">
+        <label htmlFor="email" className="text-sm font-medium text-slate-700">Email</label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          required
+          autoComplete="email"
+        />
+      </div>
+      <div className="space-y-2">
+        <label htmlFor="password" className="text-sm font-medium text-slate-700">Password</label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="••••••••"
+          required
+          autoComplete="new-password"
+        />
+        <p className="text-[10px] text-slate-500">Must be at least 8 characters</p>
+      </div>
+      <div className="space-y-2">
+        <label htmlFor="confirmPassword" className="text-sm font-medium text-slate-700">Confirm Password</label>
+        <Input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          placeholder="••••••••"
+          required
+          autoComplete="new-password"
+        />
+      </div>
+      <Button type="submit" disabled={isLoading} className="w-full">
+        {isLoading ? "Creating..." : "Create Account"}
       </Button>
     </form>
   );

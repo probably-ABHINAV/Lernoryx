@@ -1,9 +1,8 @@
 /**
- * Attendance type re-exports.
+ * Re-exporting from modules for backwards compatibility
  */
 export type {
-  AttendanceRecord,
+  Attendance,
   AttendanceStatus,
   MarkAttendanceInput,
-  AttendanceSummary,
 } from "@/modules/attendance/attendance.types";

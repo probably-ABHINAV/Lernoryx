@@ -37,22 +37,28 @@ export function LoginForm() {
           {errorStr}
         </div>
       )}
-      <Input
-        label="Email"
-        name="email"
-        type="email"
-        placeholder="you@example.com"
-        required
-        autoComplete="email"
-      />
-      <Input
-        label="Password"
-        name="password"
-        type="password"
-        placeholder="••••••••"
-        required
-        autoComplete="current-password"
-      />
+      <div className="space-y-2">
+        <label htmlFor="email" className="text-sm font-medium text-slate-700">Email</label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          required
+          autoComplete="email"
+        />
+      </div>
+      <div className="space-y-2">
+        <label htmlFor="password" className="text-sm font-medium text-slate-700">Password</label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="••••••••"
+          required
+          autoComplete="current-password"
+        />
+      </div>
       <div className="flex items-center justify-between">
         <label className="flex items-center gap-2 text-sm">
           <input
@@ -69,8 +75,8 @@ export function LoginForm() {
           Forgot password?
         </a>
       </div>
-      <Button type="submit" isLoading={isLoading} className="w-full">
-        Sign In
+      <Button type="submit" disabled={isLoading} className="w-full">
+        {isLoading ? "Signing In..." : "Sign In"}
       </Button>
     </form>
   );

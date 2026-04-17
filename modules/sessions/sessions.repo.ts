@@ -6,7 +6,7 @@ export class SessionsRepo {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("sessions")
-      .select("*")
+      .select("id, topic, time, session_date, section_id, trainer_id, org_id")
       .eq("org_id", org_id);
 
     if (error) throw error;

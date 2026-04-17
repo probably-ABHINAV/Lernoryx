@@ -1,11 +1,12 @@
 "use client";
 
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
 
 export default function TestPage() {
   useEffect(() => {
     async function test() {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("test")
         .select("*");

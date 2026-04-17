@@ -1,26 +1,43 @@
+"use client";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion } from "framer-motion";
+
 export interface StatCardProps {
-  label: string;
-  value: string;
-  change: string;
-  trend: "up" | "down";
+  label?: string;
+  title?: string; // Support for the user's snippet preference
+  value: string | number;
+  change?: string;
+  trend?: "up" | "down";
 }
 
-export function StatCard({ label, value, change, trend }: StatCardProps) {
+export function StatCard({ label, title, value, change, trend }: StatCardProps) {
+  const displayTitle = title || label;
+  
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-      <p className="text-sm font-medium text-slate-500">{label}</p>
-      <div className="mt-2 flex items-baseline gap-2">
-        <p className="text-3xl font-bold tracking-tight text-slate-900">
-          {value}
-        </p>
-        <span
-          className={`inline-flex items-center text-xs font-semibold ${
-            trend === "up" ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {trend === "up" ? "↑" : "↓"} {change}
-        </span>
-      </div>
-    </div>
+    <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }}>
+      <Card className="h-full border-slate-200/60 shadow-sm transition-shadow hover:shadow-md">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium text-slate-500">
+            {displayTitle}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold tracking-tight">{value}</div>
+          {change && (
+            <p className="text-xs text-muted-foreground mt-1">
+              <span
+                className={`inline-flex items-center font-medium ${
+                  trend === "up" ? "text-emerald-500" : "text-rose-500"
+                }`}
+              >
+                {trend === "up" ? "↗" : "↘"} {change}
+              </span>{" "}
+              from last period
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }

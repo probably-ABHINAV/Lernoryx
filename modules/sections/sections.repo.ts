@@ -9,7 +9,7 @@ export class SectionsRepo {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("sections")
-      .select("*")
+      .select("id, name, description, maxCapacity, currentEnrollment, isActive, org_id, createdAt, updatedAt")
       .eq("org_id", org_id);
 
     if (error) throw error;
