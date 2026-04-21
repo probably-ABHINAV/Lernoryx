@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 
 import { ClerkProvider, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
+import * as Sentry from "@sentry/nextjs";
 
 export default async function RootLayout({
   children,
@@ -29,6 +30,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { userId } = await auth();
+
+  if (userId) {
+    Sentry.setUser({
+      id: userId,
+    });
+  }
 
   return (
     <ClerkProvider>

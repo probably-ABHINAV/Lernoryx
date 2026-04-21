@@ -104,3 +104,6 @@ npm-env*
 .yarn/build-state.yml
 .mcp.json
 /.mcp.json
+
+# Sentry Config File
+.env.sentry-build-plugin
