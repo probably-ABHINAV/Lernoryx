@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "TMS SaaS — Modern Training Management",
@@ -6,7 +8,9 @@ export const metadata: Metadata = {
     "Streamline your training operations with our all-in-one platform for organizations, trainers, and students.",
 };
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const { userId } = await auth();
+  if (userId) redirect("/dashboard");
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
