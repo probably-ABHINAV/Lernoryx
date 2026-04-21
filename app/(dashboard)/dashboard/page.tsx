@@ -1,19 +1,22 @@
-import { requireAuth } from "@/lib/auth";
+// app/(dashboard)/dashboard/page.tsx
+import { requireAuth } from "@/lib/requireAuth";
 import { redirect } from "next/navigation";
 
-export default async function Dashboard() {
+export default async function DashboardPage() {
   const user = await requireAuth();
 
-  const role = user.profile?.role;
-
-  if (role === "admin") redirect("/dashboard/admin");
-  if (role === "trainer") redirect("/dashboard/trainer");
-  if (role === "student") redirect("/dashboard/student");
-  if (role === "super_admin") redirect("/super-admin");
-
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <p>Redirecting to dashboard...</p>
-    </div>
-  );
+  switch (user.profile.role) {
+    case "super_admin":
+      redirect("/super-admin");
+    case "admin":
+      redirect("/dashboard/admin");
+    case "trainer":
+      redirect("/dashboard/trainer");
+    case "student":
+      redirect("/dashboard/student");
+    case "pending":
+      redirect("/pending");
+    default:
+      redirect("/pending");
+  }
 }

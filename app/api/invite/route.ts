@@ -1,10 +1,10 @@
-import { getCurrentUser } from "@/lib/auth";
+import { requireAuth } from "@/lib/requireAuth";
 import { sendInvite } from "@/modules/invite/invite.service";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const user = await getCurrentUser();
+    const user = await requireAuth();
     if (!user) return new Response("Unauthorized", { status: 401 });
 
     if (user.profile.role !== "admin") {

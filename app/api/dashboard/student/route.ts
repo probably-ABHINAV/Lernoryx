@@ -1,18 +1,18 @@
-import { requireAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/requireAuth";
 import { SessionsService } from "@/modules/sessions/sessions.service";
 import { AttendanceService } from "@/modules/attendance/attendance.service";
 
 export async function GET() {
   try {
-    const { profile } = await requireAuth();
+    const user = await requireAuth();
 
-    if (profile?.role !== "student" && profile?.role !== "super_admin") {
+    if (user?.role !== "student" && user?.role !== "super_admin") {
       return Response.json({ success: false, error: "Unauthorized" }, { status: 403 });
     }
 
     const [sessions, attendance] = await Promise.all([
-      SessionsService.list({ profile } as any),
-      AttendanceService.list({ profile } as any),
+      SessionsService.list({ profile: user } as any),
+      AttendanceService.list({ profile: user } as any),
     ]);
 
     return Response.json(

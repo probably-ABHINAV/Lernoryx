@@ -1,15 +1,16 @@
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
-import PageWrapper from "@/components/ui/page-wrapper";
 
 export default function Layout({ children }: any) {
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-zinc-950 font-sans">
+    <div className="flex h-screen bg-[#f8fafb] font-sans antialiased">
       <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         <Navbar />
-        <main className="flex-1 overflow-y-auto p-6 space-y-6">
-          <PageWrapper>{children}</PageWrapper>
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-[1360px] mx-auto px-8 pb-8">
+            {children}
+          </div>
         </main>
       </div>
     </div>

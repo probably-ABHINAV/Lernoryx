@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -14,45 +14,63 @@ interface AttendanceChartProps {
   data: any[];
 }
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-[#1c2434] text-white px-4 py-2.5 rounded-[12px] shadow-xl text-[12px] font-bold">
+        <p className="text-[#9ca8c2] text-[10px] font-semibold mb-0.5">{label}</p>
+        <p>{payload[0].value}%</p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export function AttendanceChart({ data }: AttendanceChartProps) {
-  // If no data, render empty state cleanly
   if (!data || data.length === 0) {
     return (
-      <div className="h-[250px] flex items-center justify-center text-sm text-slate-500 bg-slate-50/50 rounded-lg border border-dashed border-slate-200">
-        No attendance records found to map dynamics.
+      <div className="h-[280px] flex items-center justify-center text-[13px] text-[#9ca8c2]">
+        No attendance data to display.
       </div>
     );
   }
 
   return (
-    <div className="h-[250px] w-full">
+    <div className="h-[280px] w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-          <XAxis 
-            dataKey="date" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fontSize: 12, fill: "#64748b" }} 
+        <AreaChart data={data} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
+          <defs>
+            <linearGradient id="attendanceFillGreen" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#2eb67d" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="#2eb67d" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="0" vertical={false} stroke="#f0f3f8" />
+          <XAxis
+            dataKey="date"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 11, fill: "#9ca8c2", fontWeight: 600 }}
             dy={10}
           />
-          <YAxis 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fontSize: 12, fill: "#64748b" }}
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 11, fill: "#9ca8c2", fontWeight: 600 }}
+            domain={[0, 100]}
+            tickFormatter={(v) => `${v}%`}
           />
-          <Tooltip 
-            contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }}
-          />
-          <Line
+          <Tooltip content={<CustomTooltip />} cursor={false} />
+          <Area
             type="monotone"
             dataKey="attendance"
-            stroke="#4f46e5"
-            strokeWidth={3}
-            dot={{ r: 4, fill: "#4f46e5", strokeWidth: 2, stroke: "#fff" }}
-            activeDot={{ r: 6, strokeWidth: 0 }}
+            stroke="#2eb67d"
+            strokeWidth={2.5}
+            fill="url(#attendanceFillGreen)"
+            dot={false}
+            activeDot={{ r: 5, fill: "#2eb67d", strokeWidth: 3, stroke: "#fff" }}
           />
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );

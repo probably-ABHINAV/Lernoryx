@@ -1,31 +1,52 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { AppUser } from "@/modules/users/users.types";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
+import useSWR from "swr";
 
-export type AuthUser = SupabaseUser & { profile: AppUser };
-
-interface UserContextType {
-  user: AuthUser | null;
-  role: string | null;
+export interface TmsUserProfile {
+  email: string;
+  role: "super_admin" | "admin" | "trainer" | "student" | "pending";
+  actualRole?: string;
+  orgId: string | null;
+  tmsId: string;
 }
 
-const UserContext = createContext<UserContextType>({ user: null, role: null });
+interface UserContextType {
+  profile: TmsUserProfile | null;
+  loading: boolean;
+  error: unknown;
+  mutate: () => void;
+}
 
-export function UserProvider({
-  user,
-  children,
-}: {
-  user: AuthUser | null;
-  children: React.ReactNode;
-}) {
-  const role = user?.profile?.role || null;
+export const UserContext = createContext<UserContextType>({
+  profile: null,
+  loading: true,
+  error: null,
+  mutate: () => {},
+});
+
+const fetcher = (url: string) =>
+  fetch(url).then((r) => (r.ok ? r.json() : null));
+
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  const { data, isLoading, error, mutate } = useSWR<TmsUserProfile>(
+    "/api/auth/me",
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 60_000,    // Only refetch every 60 seconds
+    }
+  );
+
   return (
-    <UserContext.Provider value={{ user, role }}>
+    <UserContext.Provider
+      value={{ profile: data ?? null, loading: isLoading, error, mutate }}
+    >
       {children}
     </UserContext.Provider>
   );
 }
 
-export const useUserContext = () => useContext(UserContext);
+export function useUser() {
+  return useContext(UserContext);
+}

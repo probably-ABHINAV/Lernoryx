@@ -20,17 +20,25 @@ export const metadata: Metadata = {
     "Modern training management platform for organizations, trainers, and students.",
 };
 
-export default function RootLayout({
+import { ClerkProvider, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { userId } = await auth();
+
   return (
-    <html lang="en" className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)}>
-      <body className="min-h-full flex flex-col font-sans">
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)}>
+        <body className="min-h-full flex flex-col font-sans">
+
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

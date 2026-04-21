@@ -1,10 +1,10 @@
-import { getCurrentUser } from "@/lib/auth";
+import { requireAuth } from "@/lib/requireAuth";
 import { GradesService } from "@/modules/grades/grades.service";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const user = await getCurrentUser();
+    const user = await requireAuth();
     if (!user) return new Response("Unauthorized", { status: 401 });
 
     const data = await GradesService.list(user);
@@ -16,7 +16,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const user = await getCurrentUser();
+    const user = await requireAuth();
     if (!user) return new Response("Unauthorized", { status: 401 });
 
     const { student_id, section_id, score, remarks } = await req.json();

@@ -102,3 +102,5 @@ npm-env*
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
+.mcp.json
+/.mcp.json

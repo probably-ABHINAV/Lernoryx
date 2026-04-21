@@ -1,12 +1,12 @@
 "use client";
 
-import { useUserContext } from "@/components/providers/user-provider";
+import { useContext } from "react";
+import { UserContext } from "@/components/providers/user-provider";
 
-/**
- * useUser — access current user context.
- */
-export function useUser(userId?: string) {
-  const { user, role } = useUserContext();
-  
-  return { user, role, isLoading: false, error: null };
+export function useUser() {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be used within UserProvider");
+  }
+  return context;
 }

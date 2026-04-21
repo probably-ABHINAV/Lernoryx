@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/requireAuth";
 import { UsersRepo } from "@/modules/users/users.repo";
 import { ActivityService } from "@/modules/activity/activity.service";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const authUser = await requireAuth();
-    const { profile } = authUser;
+    const user = await requireAuth();
     
     // Safety Isolation check
-    if (!profile?.org_id) {
+    if (!user?.org_id) {
       return NextResponse.json({ error: "No organization boundary detected" }, { status: 403 });
     }
 
     // Process physical usage constraint protections BEFORE analyzing heavy buffers
-    const currentUploads = await UsersRepo.getUploadCount(authUser.id);
+    const currentUploads = await UsersRepo.getUploadCount(user.id);
     if (currentUploads >= 10) {
       return NextResponse.json({ error: "Upload limit reached" }, { status: 429 });
     }
@@ -45,7 +44,7 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient();
     const ext = file.name.split('.').pop();
     const safeName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
-    const storagePath = `${profile.org_id}/${sectionId}/${safeName}`;
+    const storagePath = `${user.org_id}/${sectionId}/${safeName}`;
 
     // Convert internal blob interface into an ArrayBuffer strictly bound for backend HTTP Supabase transactions
     const bytes = await file.arrayBuffer();
@@ -65,14 +64,14 @@ export async function POST(req: NextRequest) {
 
     // Log Activity Context naturally mapping down onto the global tracking tables
     await ActivityService.log({
-      userId: authUser.id,
+      userId: user.id,
       action: "UPLOAD_FILE",
-      orgId: profile.org_id,
+      orgId: user.org_id,
       metadata: { file: file.name, size: file.size, path: storagePath }
     });
 
     // Enforce scaling limitation cost checks
-    await UsersRepo.incrementUploadCount(authUser.id);
+    await UsersRepo.incrementUploadCount(user.id);
 
     return NextResponse.json({ success: true, path: uploadData.path });
 

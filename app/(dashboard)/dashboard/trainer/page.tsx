@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/requireAuth";
 import { redirect } from "next/navigation";
 import { TrainerClient } from "./trainer-client";
 

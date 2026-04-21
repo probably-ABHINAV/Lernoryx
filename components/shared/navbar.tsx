@@ -41,13 +41,13 @@ export function Navbar() {
         {/* Right — Auth buttons */}
         <div className="flex items-center gap-4">
           <Link
-            href="/login"
+            href="/sign-in"
             className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
           >
             Log in
           </Link>
           <Link
-            href="/signup"
+            href="/sign-up"
             className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
           >
             Get Started

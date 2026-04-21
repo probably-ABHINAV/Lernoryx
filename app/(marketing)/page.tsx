@@ -22,7 +22,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <a
-              href="/signup"
+              href="/sign-up"
               className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
             >
               Get Started Free

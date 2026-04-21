@@ -1,19 +1,19 @@
-import { requireAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/requireAuth";
 import { SectionsService } from "@/modules/sections/sections.service";
 import { UsersService } from "@/modules/users/users.service";
 
 export async function GET() {
   try {
-    const { profile } = await requireAuth();
+    const user = await requireAuth();
 
-    if (profile?.role !== "admin" && profile?.role !== "super_admin") {
+    if (user?.role !== "admin" && user?.role !== "super_admin") {
       return Response.json({ success: false, error: "Unauthorized" }, { status: 403 });
     }
 
     // Combine queries concurrently for drastically faster processing
     const [sections, users] = await Promise.all([
-      SectionsService.list({ profile } as any),
-      UsersService.list({ profile } as any),
+      SectionsService.list({ profile: user } as any),
+      UsersService.list({ profile: user } as any),
     ]);
 
     return Response.json(

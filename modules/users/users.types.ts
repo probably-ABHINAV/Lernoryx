@@ -4,6 +4,7 @@ export interface AppUser {
   role: "admin" | "trainer" | "student" | "super_admin" | "pending";
   org_id: string;
   upload_count?: number;
+  actual_role?: string;
 }
 
 export interface CreateUserInput {
