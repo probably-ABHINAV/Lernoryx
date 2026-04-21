@@ -1,18 +1,18 @@
 "use client";
 
 import useSWR from "swr";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { Building2, Users, BookOpen, Calendar, ArrowRight, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.07 } },
 };
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
   show:  { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
 };
