@@ -21,27 +21,24 @@ export const metadata: Metadata = {
 };
 
 import { ClerkProvider, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
-import { auth } from '@clerk/nextjs/server'
-import * as Sentry from "@sentry/nextjs";
+import { setSentryUserContext } from "@/lib/sentryUser";
+import { SentryUserSync } from "@/components/shared/sentry-user-sync";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { userId } = await auth();
-
-  if (userId) {
-    Sentry.setUser({
-      id: userId,
-    });
-  }
+  // 1. Establish rich Server-side Sentry DB context for API / Server Actions
+  await setSentryUserContext();
 
   return (
     <ClerkProvider>
       <html lang="en" className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)}>
         <body className="min-h-full flex flex-col font-sans">
-
+          {/* 2. Hydrate Sentry context asynchronously on the client for frontend crashes */}
+          <SentryUserSync />
+          
           {children}
           <Toaster />
         </body>

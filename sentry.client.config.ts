@@ -6,10 +6,14 @@ Sentry.init({
   // Add optional integrations for additional features
   integrations: [
     Sentry.replayIntegration(),
+    Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] }),
   ],
+  
+  // Enable logs to be sent to Sentry
+  enableLogs: true,
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: 1.0, // Set to 1.0 explicitly per requirements for full tracing
+  tracesSampleRate: 0.1, // Set to 0.1 for production tracing baseline
 
   // Define how likely Replay events are sampled.
   // This sets the sample rate to be 10%. You may want this to be 100% while
