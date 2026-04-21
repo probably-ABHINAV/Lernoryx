@@ -57,6 +57,8 @@ const routes = {
       { href: "/super-admin", label: "Overview", icon: LayoutDashboard },
       { href: "/super-admin/orgs", label: "Organizations", icon: Building2 },
       { href: "/super-admin/health", label: "Health", icon: HeartPulse },
+      { href: "/super-admin/audit", label: "Audit Log", icon: Calendar },
+      { href: "/super-admin/flags", label: "Feature Flags", icon: BookOpen },
     ]},
   ],
 };
