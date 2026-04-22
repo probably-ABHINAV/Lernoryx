@@ -94,7 +94,7 @@ export function AnalyticsClient() {
                 <YAxis tick={{ fontSize: 11, fill: "#9ca8c2" }} axisLine={false} tickLine={false} domain={[0, 100]} unit="%" />
                 <Tooltip
                   contentStyle={{ backgroundColor: "#1c2434", border: "none", borderRadius: "12px", color: "#fff", fontSize: "12px" }}
-                  formatter={(v: number) => [`${v}%`, "Attendance"]}
+                  formatter={(v: any) => [`${v}%`, "Attendance"] as [string, string]}
                 />
                 <Area type="monotone" dataKey="rate" stroke="#2eb67d" strokeWidth={2.5} fill="url(#attendanceGrad)" />
               </AreaChart>

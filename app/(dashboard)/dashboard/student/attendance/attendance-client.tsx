@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import useSWR from "swr";
-import { motion } from "framer-motion";
 import { CheckCircle, XCircle, Clock, Calendar } from "lucide-react";
 import { Header } from "@/components/dashboard/header";
 

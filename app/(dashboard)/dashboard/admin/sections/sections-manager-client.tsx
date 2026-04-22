@@ -165,7 +165,7 @@ export function SectionsManagerClient() {
               </tr>
             </thead>
             <tbody>
-              {sections.map((section: { id: string; name: string; description?: string; enrollments?: any[]; max_capacity: number; sessions?: any[]; is_active: boolean }) => (
+              {sections.map((section: { id: string; name: string; description?: string; enrollments?: { count: number }[]; max_capacity: number; sessions?: { count: number }[]; is_active: boolean }) => (
                 <tr key={section.id} className="border-b border-[#f8fafb] hover:bg-[#f8fafb] transition-colors">
                   <td className="p-4">
                     <p className="text-[13px] font-bold text-[#1c2434]">{section.name}</p>

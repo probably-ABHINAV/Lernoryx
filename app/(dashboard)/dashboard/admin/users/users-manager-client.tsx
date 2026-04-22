@@ -3,7 +3,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { toast } from "sonner";
-import { Mail, Shield, Trash2, Plus, Copy, Check } from "lucide-react";
+import { Mail, Trash2, Plus, Copy, Check } from "lucide-react";
 import { Header } from "@/components/dashboard/header";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
@@ -28,7 +28,7 @@ export function UsersManagerClient() {
 
   const users = usersData?.users ?? [];
   const invites = invitesData?.invites ?? [];
-  const filtered = roleFilter === "all" ? users : users.filter((u: any) => u.role === roleFilter);
+  const filtered = roleFilter === "all" ? users : users.filter((u: { role: string }) => u.role === roleFilter);
 
   async function handleRoleChange(userId: string, role: string) {
     const res = await fetch("/api/admin/users", {
@@ -174,7 +174,7 @@ export function UsersManagerClient() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((u: any) => {
+              {filtered.map((u: { id: string; email: string; role: string; created_at: string }) => {
                 const cfg = ROLE_CONFIG[u.role] ?? ROLE_CONFIG["pending"];
                 return (
                   <tr key={u.id} className="border-b border-[#f8fafb] hover:bg-[#f8fafb] transition-colors">
@@ -218,11 +218,11 @@ export function UsersManagerClient() {
       </div>
 
       {/* Pending invites */}
-      {invites.filter((i: any) => i.status === "pending").length > 0 && (
+      {invites.filter((i: { status: string }) => i.status === "pending").length > 0 && (
         <div className="bg-white rounded-[20px] border border-[#eef1f6] p-6">
           <h3 className="text-[14px] font-extrabold text-[#1c2434] mb-4">Pending Invites</h3>
           <div className="space-y-2">
-            {invites.filter((i: any) => i.status === "pending").map((invite: any) => (
+            {invites.filter((i: { status: string }) => i.status === "pending").map((invite: { id: string; email: string; role: string }) => (
               <div key={invite.id} className="flex items-center justify-between p-3 rounded-[12px] bg-[#fefce8] border border-[#e8b931]/20">
                 <div className="flex items-center gap-3">
                   <Mail size={14} className="text-[#e8b931]" />
