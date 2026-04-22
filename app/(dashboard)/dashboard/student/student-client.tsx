@@ -122,7 +122,7 @@ export function StudentClient() {
                 <Calendar size={20} className="text-[#2eb67d]" />
               </div>
               <p className="text-[13px] font-bold text-[#1c2434] mb-1">No upcoming sessions</p>
-              <p className="text-[12px] text-[#9ca8c2]">Your trainer hasn't scheduled any yet</p>
+              <p className="text-[12px] text-[#9ca8c2]">Your trainer hasn&apos;t scheduled any yet</p>
             </div>
           ) : (
             <div className="space-y-3">

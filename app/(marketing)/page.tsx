@@ -205,7 +205,7 @@ export default function LandingPage() {
                 <BarChart3 className="w-8 h-8 text-[#1c2434] mb-6" />
                 <h4 className="text-[24px] font-bold text-[#1c2434] mb-4">Deep Analytics Command</h4>
                 <p className="text-[14px] font-medium text-[#7a849b] max-w-md leading-relaxed opacity-90">
-                  Track student lifecycle from enrollment to graduation with precision metrics that don't just show data—they reveal insights.
+                  Track student lifecycle from enrollment to graduation with precision metrics that don&apos;t just show data—they reveal insights.
                 </p>
               </div>
               <div className="absolute top-10 right-10 flex gap-2">

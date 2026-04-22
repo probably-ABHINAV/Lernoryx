@@ -14,7 +14,18 @@ const TIMEZONES = [
 ];
 
 export function SettingsClient() {
-  const { data, isLoading, mutate } = useSWR("/api/admin/settings", fetcher);
+  const { data, isLoading, mutate } = useSWR("/api/admin/settings", fetcher, {
+    onSuccess: (d) => {
+      if (d?.settings) {
+        setForm({
+          timezone: d.settings.timezone ?? "Asia/Kolkata",
+          logoUrl: d.settings.logo_url ?? "",
+          notifyEmail: d.settings.notify_email ?? true,
+          notifyBeforeSessionMinutes: d.settings.notify_before_session_minutes ?? 30,
+        });
+      }
+    }
+  });
   const [form, setForm] = useState({
     timezone: "Asia/Kolkata",
     logoUrl: "",
@@ -23,16 +34,7 @@ export function SettingsClient() {
   });
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    if (data?.settings) {
-      setForm({
-        timezone: data.settings.timezone ?? "Asia/Kolkata",
-        logoUrl: data.settings.logo_url ?? "",
-        notifyEmail: data.settings.notify_email ?? true,
-        notifyBeforeSessionMinutes: data.settings.notify_before_session_minutes ?? 30,
-      });
-    }
-  }, [data]);
+
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();

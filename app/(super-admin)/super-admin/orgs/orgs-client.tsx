@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useSWR from "swr";
 import { toast } from "sonner";
 import { Search, Plus, Pause, Play, Trash2, Download, ChevronLeft, ChevronRight, Building2 } from "lucide-react";
@@ -38,11 +38,11 @@ export function OrgsClient() {
   const total      = data?.total ?? 0;
   const totalPages = data?.totalPages ?? 1;
 
-  let searchTimeout: ReturnType<typeof setTimeout>;
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   function handleSearch(v: string) {
     setSearch(v);
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => { setDebouncedSearch(v); setPage(1); }, 400);
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    searchTimeoutRef.current = setTimeout(() => { setDebouncedSearch(v); setPage(1); }, 400);
   }
 
   async function handleAction(id: string, action: string, extra?: Record<string, unknown>) {

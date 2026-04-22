@@ -67,7 +67,7 @@ export function ModulesClient({ sections }: { sections: { id: string; name: stri
               <BookOpen size={22} className="text-[#2eb67d]" />
             </div>
             <p className="text-[14px] font-extrabold text-[#1c2434] mb-2">No materials yet</p>
-            <p className="text-[13px] text-[#9ca8c2]">Your trainer hasn't uploaded any files for this section</p>
+            <p className="text-[13px] text-[#9ca8c2]">Your trainer hasn&apos;t uploaded any files for this section</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

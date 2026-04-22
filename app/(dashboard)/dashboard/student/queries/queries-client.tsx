@@ -125,7 +125,7 @@ export function QueriesClient({ sections }: { sections: { id: string; name: stri
                 </div>
                 {q.answer && (
                   <div className="mt-2 pl-3 border-l-2 border-[#2eb67d]">
-                    <p className="text-[11px] font-bold text-[#2eb67d] mb-1">Trainer's Response</p>
+                    <p className="text-[11px] font-bold text-[#2eb67d] mb-1">Trainer&apos;s Response</p>
                     <p className="text-[12px] text-[#7a849b]">{q.answer}</p>
                   </div>
                 )}
