@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
@@ -14,7 +14,7 @@ const TIMEZONES = [
 ];
 
 export function SettingsClient() {
-  const { data, isLoading, mutate } = useSWR("/api/admin/settings", fetcher, {
+  const { isLoading, mutate } = useSWR("/api/admin/settings", fetcher, {
     onSuccess: (d) => {
       if (d?.settings) {
         setForm({
@@ -33,8 +33,6 @@ export function SettingsClient() {
     notifyBeforeSessionMinutes: 30,
   });
   const [saving, setSaving] = useState(false);
-
-
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();

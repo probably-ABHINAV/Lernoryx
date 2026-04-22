@@ -16,20 +16,18 @@ export function SectionsManagerClient() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<SectionForm>(DEFAULT_FORM);
   const [saving, setSaving] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   const { data, isLoading, mutate } = useSWR("/api/admin/sections", fetcher);
   const sections = data?.sections ?? [];
 
   function openCreate() { setForm(DEFAULT_FORM); setEditingId(null); setShowForm(true); }
-  function openEdit(s: any) { setForm({ name: s.name, description: s.description ?? "", maxCapacity: s.max_capacity }); setEditingId(s.id); setShowForm(true); }
+  function openEdit(s: { id: string; name: string; description?: string | null; max_capacity: number }) { setForm({ name: s.name, description: s.description ?? "", maxCapacity: s.max_capacity }); setEditingId(s.id); setShowForm(true); }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
 
     const method = editingId ? "PATCH" : "POST";
-    const body = editingId ? { id: editingId, ...form } : form;
 
     const res = await fetch("/api/admin/sections", {
       method,
@@ -76,7 +74,7 @@ export function SectionsManagerClient() {
       return;
     }
 
-    if (res.ok) { toast.success("Section deleted"); setDeleteConfirm(null); mutate(); }
+    if (res.ok) { toast.success("Section deleted"); mutate(); }
     else { const err = await res.json(); toast.error(err.error ?? "Failed to delete"); }
   }
 
@@ -167,7 +165,7 @@ export function SectionsManagerClient() {
               </tr>
             </thead>
             <tbody>
-              {sections.map((section: any) => (
+              {sections.map((section: { id: string; name: string; description?: string; enrollments?: any[]; max_capacity: number; sessions?: any[]; is_active: boolean }) => (
                 <tr key={section.id} className="border-b border-[#f8fafb] hover:bg-[#f8fafb] transition-colors">
                   <td className="p-4">
                     <p className="text-[13px] font-bold text-[#1c2434]">{section.name}</p>

@@ -94,7 +94,7 @@ export function AnalyticsClient() {
                 <YAxis tick={{ fontSize: 11, fill: "#9ca8c2" }} axisLine={false} tickLine={false} domain={[0, 100]} unit="%" />
                 <Tooltip
                   contentStyle={{ backgroundColor: "#1c2434", border: "none", borderRadius: "12px", color: "#fff", fontSize: "12px" }}
-                  formatter={(v: any) => [`${v}%`, "Attendance"]}
+                  formatter={(v: number) => [`${v}%`, "Attendance"]}
                 />
                 <Area type="monotone" dataKey="rate" stroke="#2eb67d" strokeWidth={2.5} fill="url(#attendanceGrad)" />
               </AreaChart>
@@ -146,7 +146,7 @@ export function AnalyticsClient() {
         <div className="bg-white rounded-[20px] border border-[#eef1f6] p-6">
           <h3 className="text-[14px] font-extrabold text-[#1c2434] mb-5">Average Score by Section</h3>
           <div className="space-y-3">
-            {sectionGrades.sort((a: any, b: any) => b.avgScore - a.avgScore).map((s: any) => {
+            {sectionGrades.sort((a: { avgScore: number }, b: { avgScore: number }) => b.avgScore - a.avgScore).map((s: { sectionId: string; avgScore: number; name: string }) => {
               const color = s.avgScore >= 80 ? "#2eb67d" : s.avgScore >= 60 ? "#e8b931" : "#e74c3c";
               return (
                 <div key={s.sectionId} className="space-y-1">
