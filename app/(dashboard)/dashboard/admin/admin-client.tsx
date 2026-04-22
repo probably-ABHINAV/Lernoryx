@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { Layers, Users, UserCheck, BarChart3, ArrowUpRight, MoreHorizontal, BookOpen, Clock, TrendingUp } from "lucide-react";
+import { Layers, ArrowUpRight, MoreHorizontal, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 const RolesChart = dynamic(
@@ -33,14 +33,14 @@ export function AdminClient() {
   const sections = data?.sections || [];
   const users = data?.users || [];
 
-  const activeTrainers = users.filter((u: any) => u.role === "trainer").length;
-  const totalStudents = users.filter((u: any) => u.role === "student").length;
+  const activeTrainers = users.filter((u: { role: string }) => u.role === "trainer").length;
+  const totalStudents = users.filter((u: { role: string }) => u.role === "student").length;
 
   const roleData = [
-    { name: "Admins", value: users.filter((u: any) => u.role === "admin").length || 1 },
+    { name: "Admins", value: users.filter((u: { role: string }) => u.role === "admin").length || 1 },
     { name: "Trainers", value: activeTrainers || 4 },
     { name: "Trainees", value: totalStudents || 45 },
-  ].filter((d: any) => d.value > 0);
+  ].filter((d: { value: number }) => d.value > 0);
 
   const mockAttendance = [
     { date: "Mon", attendance: 78 },
@@ -234,7 +234,7 @@ export function AdminClient() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sections.slice(0, 5).map((section: any) => (
+                {sections.slice(0, 5).map((section: { id: string; name: string; description?: string }) => (
                   <TableRow key={section.id} className="hover:bg-[#f8fafb] border-b border-[#f0f3f8]">
                     <TableCell className="px-7 py-4">
                       <div className="flex items-center gap-3">
