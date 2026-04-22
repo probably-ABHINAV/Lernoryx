@@ -7,6 +7,7 @@ export interface TmsUserProfile {
   email: string;
   role: "super_admin" | "admin" | "trainer" | "student" | "pending";
   actualRole?: string;
+  actual_role?: string;
   orgId: string | null;
   tmsId: string;
 }
